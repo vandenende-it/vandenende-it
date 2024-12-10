@@ -2,8 +2,10 @@ import fs from 'fs'
 import path from 'path'
 
 type Metadata = {
+  publishedAt: string;
   title: string
-  publishedAt: string
+  startDate: string
+  endDate: string
   summary: string
   image?: string
 }
@@ -50,10 +52,13 @@ function getMDXData(dir) {
 }
 
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts'))
+  return getMDXData(path.join(process.cwd(), 'app', 'projects', 'posts'))
 }
 
 export function formatDate(date: string, includeRelative = false) {
+  if (date === 'Present') {
+    return date
+  }
   let currentDate = new Date()
   if (!date.includes('T')) {
     date = `${date}T00:00:00`

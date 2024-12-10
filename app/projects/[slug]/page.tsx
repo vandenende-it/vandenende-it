@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
-import { formatDate, getBlogPosts } from 'app/blog/utils'
+import { formatDate, getBlogPosts } from 'app/projects/utils'
 import { baseUrl } from 'app/sitemap'
+import {Metadata} from "next";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -11,16 +12,17 @@ export async function generateStaticParams() {
   }))
 }
 
-export function generateMetadata({ params }) {
+export function generateMetadata({ params }): Metadata {
   let post = getBlogPosts().find((post) => post.slug === params.slug)
   if (!post) {
-    return
+    return { title: "Not Found" } // Ensure a valid Metadata object is returned
   }
+
 
   let {
     title,
-    publishedAt: publishedTime,
     summary: description,
+    publishedAt: publishedTime,
     image,
   } = post.metadata
   let ogImage = image
@@ -35,7 +37,7 @@ export function generateMetadata({ params }) {
       description,
       type: 'article',
       publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${baseUrl}/projects/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -74,10 +76,10 @@ export default function Blog({ params }) {
             image: post.metadata.image
               ? `${baseUrl}${post.metadata.image}`
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${baseUrl}/blog/${post.slug}`,
+            url: `${baseUrl}/projects/${post.slug}`,
             author: {
               '@type': 'Person',
-              name: 'My Portfolio',
+              name: 'Projects',
             },
           }),
         }}
@@ -87,7 +89,7 @@ export default function Blog({ params }) {
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+          {formatDate(post.metadata.endDate)}
         </p>
       </div>
       <article className="prose">

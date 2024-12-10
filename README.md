@@ -1,6 +1,6 @@
 # Portfolio Van Den Ende IT
 
-This is a porfolio site template complete with a blog. Includes:
+This is a porfolio site template complete with a projects. Includes:
 
 - MDX and Markdown support
 - Optimized for SEO (sitemap, robots, JSON-LD schema)
