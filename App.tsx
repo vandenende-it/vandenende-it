@@ -4,6 +4,7 @@ import { Footer } from './components/Layout/Footer';
 import { Hero } from './components/Sections/Hero';
 import { Services } from './components/Sections/Services';
 import { Experience } from './components/Sections/Experience';
+import { Terminal } from './components/Sections/Terminal';
 import { Contact } from './components/Sections/Contact';
 import { Section } from './types';
 
@@ -66,6 +67,10 @@ const App: React.FC = () => {
 
         <section id={Section.EXPERIENCE} className="pt-16">
           <Experience />
+        </section>
+
+        <section id={Section.TERMINAL} className="pt-16">
+          <Terminal />
         </section>
 
         <section id={Section.CONTACT} className="pt-16 pb-24">

@@ -28,16 +28,19 @@ export const Contact: React.FC = () => {
 
     try {
       // Execute reCAPTCHA v3
+      // IMPORTANT: Ensure the key below matches the one in index.html
+      const SITE_KEY = '6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu';
+
       if (window.grecaptcha) {
         await new Promise<void>((resolve) => {
            window.grecaptcha.ready(async () => {
               try {
-                // REPLACE 'YOUR_RECAPTCHA_V3_SITE_KEY' with the actual key in index.html and here
-                const token = await window.grecaptcha.execute('YOUR_RECAPTCHA_V3_SITE_KEY', { action: 'submit' });
+                const token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
                 console.log("Secure Token Generated:", token);
                 resolve();
               } catch (err) {
                 console.error("Recaptcha execution failed", err);
+                // We resolve anyway to allow the demo to continue (in prod you might block)
                 resolve(); 
               }
            });

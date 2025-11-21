@@ -13,6 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ currentSection, onNavigate }) =>
     { label: 'SYST_HOME', value: Section.HOME },
     { label: 'SKILLS', value: Section.SERVICES },
     { label: 'SYS_LOG', value: Section.EXPERIENCE },
+    { label: 'AI_CORE', value: Section.TERMINAL },
     { label: 'COMMS', value: Section.CONTACT },
   ];
 

@@ -11,11 +11,6 @@ export const Experience: React.FC = () => {
       summary: 'Operating as an independent specialist for high-profile clients. Focusing on Cloud Native solutions, modern Test Automation (Playwright, Testcontainers), and CI/CD Strategy.',
       projects: [
         {
-          name: 'SPORTLINK',
-          details: 'Defining Test Strategy and framework migration. Replacing Cypress with Playwright for enhanced stability and speed.',
-          tech: ['Playwright', 'Java', 'Appium', 'Strategy']
-        },
-        {
           name: 'LELY',
           details: 'Pioneered integration testing with Testcontainers to isolate databases. Guided international teams in migrating from legacy Cucumber to modern Playwright.',
           tech: ['Testcontainers', 'Playwright', 'Java']
@@ -44,6 +39,7 @@ export const Experience: React.FC = () => {
       period: '2013 - 2017',
       summary: 'Key player in the Dutch DevOps & Continuous Delivery revolution. Delivered high-end consultancy and training.',
       highlights: [
+        'Gave a workshop at Agile Testing Days 2015: "Scalable QA with Docker" (Major Achievement).',
         'Speaker at Testworks Conf 2015 & 2016 ("Scalable QA with Docker").',
         'Hosted meetups on Docker, Webdriver Patterns, and Mobile Testing.',
         'Delivered "Continuous Delivery with Docker" training to external clients.'
