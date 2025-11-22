@@ -12,6 +12,11 @@ const App: React.FC = () => {
   const [currentSection, setCurrentSection] = useState<Section>(Section.HOME);
   const [showScanline, setShowScanline] = useState(true);
 
+  // Ensure page loads at the top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Handle navigation with scroll
   const navigateTo = (sectionId: Section) => {
     const element = document.getElementById(sectionId);

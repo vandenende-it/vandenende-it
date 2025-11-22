@@ -36,3 +36,8 @@
     pointer-events: none;
   }
 }
+
+/* Hide Google reCAPTCHA badge */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
