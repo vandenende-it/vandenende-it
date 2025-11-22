@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { Hero } from './components/Sections/Hero';
@@ -39,6 +39,29 @@ const App: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Dynamically load Google reCAPTCHA script
+  useEffect(() => {
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+    if (!siteKey) {
+      console.error("Vite environment variable VITE_RECAPTCHA_SITE_KEY is not set.");
+      return;
+    }
+
+    // Prevent adding the script multiple times
+    if (document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]')) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+
+    document.head.appendChild(script);
+
+  }, []); // Empty array ensures this runs only once on mount
 
   return (
     <div className="min-h-screen relative flex flex-col font-mono text-neon-blue selection:bg-neon-pink selection:text-white overflow-x-hidden">

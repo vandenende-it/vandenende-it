@@ -4,52 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VANDENENDE.IT | Test Automation & Cloud</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              mono: ['"Share Tech Mono"', 'monospace'],
-              display: ['"VT323"', 'monospace'],
-            },
-            colors: {
-              'retro-black': '#050505',
-              'retro-dark': '#0a0a12',
-              'retro-grid': '#1a1a2e',
-              'neon-pink': '#ff00ff',
-              'neon-blue': '#00ffff',
-              'neon-green': '#39ff14',
-              'neon-yellow': '#fff01f',
-            },
-            animation: {
-              'scanline': 'scanline 8s linear infinite',
-              'blink': 'blink 1s step-end infinite',
-              'glow': 'glow 2s ease-in-out infinite alternate',
-            },
-            keyframes: {
-              scanline: {
-                '0%': { transform: 'translateY(-100%)' },
-                '100%': { transform: 'translateY(100%)' }
-              },
-              blink: {
-                '0%, 100%': { opacity: '1' },
-                '50%': { opacity: '0' }
-              },
-              glow: {
-                'from': { boxShadow: '0 0 5px #00ffff, 0 0 10px #00ffff' },
-                'to': { boxShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff' }
-              }
-            }
-          }
-        }
-      }
-    </script>
     <style>
       body {
         background-color: #050505;
@@ -86,16 +43,6 @@
         visibility: hidden; 
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
-  }
-}
-</script>
 <link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-retro-dark text-neon-blue font-mono crt-overlay relative">

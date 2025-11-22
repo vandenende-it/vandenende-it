@@ -28,15 +28,14 @@ export const Contact: React.FC = () => {
 
     try {
       // Execute reCAPTCHA v3
-      // BELANGRIJK: Zorg ervoor dat de reCAPTCHA v3 script tag in je HTML staat.
-      // <script src="https://www.google.com/recaptcha/api.js?render=UW_RECAPTCHA_SITE_KEY"></script>
-      const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu';
+      // The reCAPTCHA script is loaded in App.tsx. Here we execute it.
+      const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
       let token = '';
 
-      if (window.grecaptcha) {
+      if (window.grecaptcha && siteKey) {
         await window.grecaptcha.ready();
         try {
-          token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
+          token = await window.grecaptcha.execute(siteKey, { action: 'submit' });
           console.log("Secure Token Generated.");
         } catch (err) {
           console.error("Recaptcha execution failed", err);
