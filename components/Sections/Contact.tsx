@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { ContactFormState } from '../../types';
-import { sendEmail } from '../../services/mailService';
 
 // Declaration for global Google Recaptcha
 declare global {
   interface Window {
     grecaptcha: any;
   }
+}
+
+// Define the shape of your form data
+interface ContactFormState {
+  name: string;
+  email: string;
+  message: string;
 }
 
 export const Contact: React.FC = () => {
@@ -17,6 +22,7 @@ export const Contact: React.FC = () => {
   });
   const [status, setStatus] = useState<'IDLE' | 'SENDING' | 'SUCCESS' | 'ERROR'>('IDLE');
 
+  const [feedbackMessage, setFeedbackMessage] = useState('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
@@ -25,38 +31,53 @@ export const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('SENDING');
+    setFeedbackMessage('');
 
-    try {
-      // Execute reCAPTCHA v3
-      // The reCAPTCHA script is loaded in App.tsx. Here we execute it.
-      const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-      let token = '';
-
-      if (window.grecaptcha && siteKey) {
-        await window.grecaptcha.ready();
-        try {
-          token = await window.grecaptcha.execute(siteKey, { action: 'submit' });
-          console.log("Secure Token Generated.");
-        } catch (err) {
-          console.error("Recaptcha execution failed", err);
-          // Optioneel: stop de uitvoering als reCAPTCHA faalt
-        }
-      } else {
-        console.warn("Recaptcha not loaded");
-      }
-
-      // Pass form data AND token to the backend
-      const success = await sendEmail(formState, token);
-      
-      if (success) {
-        setStatus('SUCCESS');
-        setFormState({ name: '', email: '', message: '' });
-      } else {
-        setStatus('ERROR');
-      }
-    } catch (error) {
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+    if (!siteKey) {
+      console.error("VITE_RECAPTCHA_SITE_KEY is not set.");
       setStatus('ERROR');
+      setFeedbackMessage('Client configuration error.');
+      return;
     }
+
+    if (typeof window.grecaptcha === 'undefined') {
+      console.error('reCAPTCHA script not loaded.');
+      setStatus('ERROR');
+      setFeedbackMessage('Security service connection failed.');
+      return;
+    }
+
+    window.grecaptcha.ready(() => {
+      window.grecaptcha.execute(siteKey, { action: 'submit' }).then(async (token: string) => {
+        try {
+          const response = await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...formState, token }),
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || 'An unknown error occurred.');
+          }
+
+          setStatus('SUCCESS');
+          setFormState({ name: '', email: '', message: '' }); // Clear form on success
+
+        } catch (error: any) {
+          setStatus('ERROR');
+          setFeedbackMessage(`Transmission failed: ${error.message}`);
+        }
+      }).catch((err: any) => {
+        console.error("reCAPTCHA execution failed", err);
+        setStatus('ERROR');
+        setFeedbackMessage('Security token generation failed.');
+      });
+    });
   };
 
   return (
@@ -146,6 +167,12 @@ export const Contact: React.FC = () => {
                 )}
               </button>
               
+              {status === 'ERROR' && (
+                <p className="text-sm text-red-500 text-center">
+                  {feedbackMessage}
+                </p>
+              )}
+
               <p className="text-[10px] text-gray-500 text-center w-full opacity-60 hover:opacity-100 transition-opacity">
                 This site is protected by reCAPTCHA and the Google 
                 <a href="https://policies.google.com/privacy" className="hover:text-neon-blue underline mx-1" target="_blank" rel="noreferrer">Privacy Policy</a> and 
