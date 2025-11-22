@@ -78,7 +78,7 @@ AWAITING INPUT...`,
           ))}
           {isLoading && (
             <div className="text-neon-green animate-pulse">
-              > SYSTEM: PROCESSING_DATA...
+              {'> SYSTEM: PROCESSING_DATA...'}
             </div>
           )}
           <div ref={bottomRef} />
