@@ -15,11 +15,11 @@ export default async (request, context) => {
   }
 
   // Get API Keys from Netlify Environment
-  const mailerSendApiKey = Netlify.env.get("MAILERSEND_API_KEY");
+  const resendApiKey = Netlify.env.get("RESEND_API_KEY");
   const recaptchaSecretKey = Netlify.env.get("RECAPTCHA_SECRET_KEY");
 
-  if (!mailerSendApiKey || !recaptchaSecretKey) {
-    console.error("Error: Missing API Keys in Netlify settings.");
+  if (!resendApiKey || !recaptchaSecretKey) {
+    console.error("Error: Missing RESEND_API_KEY or RECAPTCHA_SECRET_KEY in Netlify settings.");
     return new Response(JSON.stringify({ error: "Server misconfiguration" }), { status: 500, headers });
   }
 
@@ -44,42 +44,32 @@ export default async (request, context) => {
       return new Response(JSON.stringify({ error: "Bot detected. Access denied." }), { status: 403, headers });
     }
 
-    // 3. Send Email via MailerSend
-    const response = await fetch("https://api.mailersend.com/v1/email", {
+    // 3. Send Email via Resend
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        "Authorization": `Bearer ${mailerSendApiKey}`
+        "Authorization": `Bearer ${resendApiKey}`
       },
       body: JSON.stringify({
-        from: { 
-          email: "info@vandenende.it", // Verified sender in MailerSend
-          name: "VANDENENDE.IT Portfolio" 
-        },
-        to: [
-          { 
-            email: "maarten@vandenende.it", 
-            name: "Maarten van den Ende" 
-          }
-        ],
+        from: "VANDENENDE.IT Portfolio <info@vandenende.it>", // Must be a verified domain in Resend
+        to: "maarten@vandenende.it",
         subject: `[PORTFOLIO] Uplink from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
         html: `
           <h3>Incoming Transmission</h3>
           <p><strong>Agent:</strong> ${name}</p>
           <p><strong>Contact:</strong> ${email}</p>
-          <p><strong>Security Score:</strong> ${verifyData.score}</p>
+          <p><strong>Security Score:</strong> ${verifyData.score.toFixed(2)}</p>
           <hr />
           <p><strong>Payload:</strong></p>
           <p>${message.replace(/\n/g, '<br>')}</p>
         `
       })
     });
-
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("MailerSend API Error:", errorText);
+      console.error("Resend API Error:", errorText);
       return new Response(JSON.stringify({ error: "Failed to send email via provider." }), { status: response.status, headers });
     }
 

@@ -28,23 +28,20 @@ export const Contact: React.FC = () => {
 
     try {
       // Execute reCAPTCHA v3
-      // IMPORTANT: Ensure the key below matches the one in index.html
-      const SITE_KEY = '6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu';
+      // BELANGRIJK: Zorg ervoor dat de reCAPTCHA v3 script tag in je HTML staat.
+      // <script src="https://www.google.com/recaptcha/api.js?render=UW_RECAPTCHA_SITE_KEY"></script>
+      const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu';
       let token = '';
 
       if (window.grecaptcha) {
-        await new Promise<void>((resolve) => {
-           window.grecaptcha.ready(async () => {
-              try {
-                token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
-                console.log("Secure Token Generated.");
-                resolve();
-              } catch (err) {
-                console.error("Recaptcha execution failed", err);
-                resolve(); 
-              }
-           });
-        });
+        await window.grecaptcha.ready();
+        try {
+          token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
+          console.log("Secure Token Generated.");
+        } catch (err) {
+          console.error("Recaptcha execution failed", err);
+          // Optioneel: stop de uitvoering als reCAPTCHA faalt
+        }
       } else {
         console.warn("Recaptcha not loaded");
       }
