@@ -7,43 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
-    <style>
-      body {
-        background-color: #050505;
-        color: #00ffff;
-        overflow-x: hidden;
-      }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0a0a12;
-        border-left: 1px solid #1a1a2e;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #ff00ff;
-        border: 1px solid #00ffff;
-      }
-      .crt-overlay::before {
-        content: " ";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-        z-index: 50;
-        background-size: 100% 2px, 3px 100%;
-        pointer-events: none;
-      }
-      /* Hide reCAPTCHA badge if you include the legal text manually */
-      .grecaptcha-badge { 
-        visibility: hidden; 
-      }
-    </style>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-retro-dark text-neon-blue font-mono crt-overlay relative">
     <div id="root"></div>
