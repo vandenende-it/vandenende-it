@@ -30,17 +30,17 @@ export const Contact: React.FC = () => {
       // Execute reCAPTCHA v3
       // IMPORTANT: Ensure the key below matches the one in index.html
       const SITE_KEY = '6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu';
+      let token = '';
 
       if (window.grecaptcha) {
         await new Promise<void>((resolve) => {
            window.grecaptcha.ready(async () => {
               try {
-                const token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
-                console.log("Secure Token Generated:", token);
+                token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
+                console.log("Secure Token Generated.");
                 resolve();
               } catch (err) {
                 console.error("Recaptcha execution failed", err);
-                // We resolve anyway to allow the demo to continue (in prod you might block)
                 resolve(); 
               }
            });
@@ -49,7 +49,9 @@ export const Contact: React.FC = () => {
         console.warn("Recaptcha not loaded");
       }
 
-      const success = await sendEmail(formState);
+      // Pass form data AND token to the backend
+      const success = await sendEmail(formState, token);
+      
       if (success) {
         setStatus('SUCCESS');
         setFormState({ name: '', email: '', message: '' });
