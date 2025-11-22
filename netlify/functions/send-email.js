@@ -60,7 +60,7 @@ export default async (request, context) => {
           <h3>Incoming Transmission</h3>
           <p><strong>Agent:</strong> ${name}</p>
           <p><strong>Contact:</strong> ${email}</p>
-          <p><strong>Security Score:</strong> ${verifyData.score.toFixed(2)}</p>
+          <p><strong>reCAPTCHA Score:</strong> ${verifyData.score.toFixed(2)}</p>
           <hr />
           <p><strong>Payload:</strong></p>
           <p>${message.replace(/\n/g, '<br>')}</p>
