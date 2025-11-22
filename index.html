@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflVxQsAAAAAPYvQYReHaCj9wZulMJUPfDiVDPu"></script>
     <script>
+      grecaptcha.ready(function() {grecaptcha.execute('YOUR_NEW_SITE_KEY', {action: 'submit'}).then(function(token) { /* Add token to form */ });});
       tailwind.config = {
         darkMode: 'class',
         theme: {
@@ -98,7 +98,8 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
+  <body class="bg-retro-dark text-neon-blue font-mono crt-overlay relative">
+    <script src="https://www.google.com/recaptcha/api.js?render=YOUR_NEW_SITE_KEY"></script>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
