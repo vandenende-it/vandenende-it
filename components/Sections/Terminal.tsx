@@ -22,10 +22,15 @@ AWAITING INPUT...`,
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [history]);
 
   const handleCommand = async (e: React.FormEvent, overrideInput?: string) => {
@@ -61,7 +66,10 @@ AWAITING INPUT...`,
       </div>
 
       <div className="bg-black border border-neon-green/50 rounded-lg p-1 shadow-[0_0_20px_rgba(57,255,20,0.15)]">
-        <div className="bg-retro-black/90 p-4 h-[500px] overflow-y-auto font-mono text-sm md:text-base scrollbar-hide">
+        <div 
+          ref={scrollRef}
+          className="bg-retro-black/90 p-4 h-[500px] overflow-y-auto font-mono text-sm md:text-base scrollbar-hide"
+        >
           {history.map((msg, idx) => (
             <div key={idx} className={`mb-4 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
               <span className={`inline-block px-2 py-1 ${msg.role === 'user' ? 'text-neon-pink' : 'text-neon-green'}`}>
@@ -81,7 +89,6 @@ AWAITING INPUT...`,
               {'> SYSTEM: PROCESSING_DATA...'}
             </div>
           )}
-          <div ref={bottomRef} />
         </div>
 
         <form onSubmit={handleCommand} className="border-t border-neon-green/30 p-2 flex bg-black">
